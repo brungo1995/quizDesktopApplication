@@ -1,4 +1,4 @@
-package quizApp;
+package quizApp.model;
 
 public class Memo {
 

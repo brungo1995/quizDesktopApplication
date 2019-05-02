@@ -25,7 +25,7 @@ import java.util.Properties;
 
 import org.apache.derby.impl.sql.catalog.SYSROUTINEPERMSRowFactory;
 
-import quizApp.User;
+import quizApp.model.User;
 
 
 public class DatabaseHandler {
