@@ -1,2 +1,7 @@
 .metadata
-.recommenders
+.recommendersbin
+.metadata
+*~
+target/
+.DS_Store
+._*
