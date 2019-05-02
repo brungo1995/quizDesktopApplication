@@ -19,13 +19,15 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
 
 import org.apache.derby.impl.sql.catalog.SYSROUTINEPERMSRowFactory;
 
-import quizApp.model.User;
+import quizApp.model.*;
 
 
 public class DatabaseHandler {
@@ -189,7 +191,27 @@ public class DatabaseHandler {
 			return false;
 		}
 	}
-
 	
+	private List<Question> getQuestions(Integer subjectCode) {
+		 Question dummyQuestion = new Question("dummy question", 0, 0, 0);
+         return Arrays.asList(dummyQuestion);
+	}
+	
+	private List<Answer> getAnswers(Integer subjectCode){
+		 Answer dummyAnswer = new Answer("dummy answer", 0, 0, 0);
+		 return Arrays.asList (dummyAnswer);
+	}
+	
+	public Quiz getQuiz(Integer subjectCode) {
+		List<Answer> answers = getAnswers(subjectCode);
+		List <Question> questions = getQuestions(subjectCode);
+		
+		
+		if (answers != null && questions != null) {
+			return  new Quiz (questions, answers, subjectCode);
+		} else  {
+			return  null;
+		}
+	}
 }
 
