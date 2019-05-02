@@ -1,30 +1,18 @@
 package database;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.Properties;
 
-
-import org.apache.derby.impl.sql.catalog.SYSROUTINEPERMSRowFactory;
-
+import quizApp.model.Answer;
+import quizApp.model.Question;
+import quizApp.model.Subject;
 import quizApp.model.User;
 
 
@@ -33,10 +21,13 @@ public class DatabaseHandler {
 	private PreparedStatement statement = null;
 	private static DatabaseHandler handler = null;
 	private Properties props;
+	private boolean  isInserted = false;
 	
 	private DatabaseHandler(){
 		settings();
-		if(createConnection()){
+		boolean isConnected = false;
+		isConnected = createConnection();
+		if(isConnected){
 			createTables();			
 		}
 	}
@@ -62,37 +53,33 @@ public class DatabaseHandler {
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
 			connect = DriverManager.getConnection("jdbc:derby:quizDB;create=true");
-			System.out.println("database created");
+			System.out.println("database created 1");
 			return true;
 		}
 		catch (Exception e) {
+			System.out.println("couldn't create database");
 			return false;
 		}
 		
 	}
 	
-	
-
-	/**
-	 * Create all the tables in needed to run the application
-	 */
 	private void createTables() {
-//		createTableUsersTable();
-//		createTableQuestion()
-//		createTableAnswer()
-
+		createTableUser();
+		createTableAnswer();
+		createTableQuestion();
+		createTablesubject();
 	}
-	
-	private void createUsersTable() {
-	//USER
+
+	//	User(int userId, String name, int score)
+	private void createTableUser() {
 	String TABLE_NAME = "users";
 	
 	try {                                     
 		statement = connect.prepareStatement("CREATE TABLE "+ TABLE_NAME + "("
-				+ " studentNumber integer primary key,\n"
-				+ " username varchar(30),\n"
-				+ " password varchar(50),\n"
-				+ " email varchar(60)"
+				+ " userId int,\n"
+				+ " name varchar(30),\n"
+				+ " score int,\n"
+				+ " PRIMARY KEY (userId)"
 				+ " )"
 				);
 		
@@ -101,19 +88,111 @@ public class DatabaseHandler {
 		
 		if(!tables.next()){
 			//table does not exist
-			boolean isTable = statement.execute();
+			statement.execute();
 			System.out.println(TABLE_NAME + " created");
 			
 		}else{
 			System.out.println(TABLE_NAME + " exist already");
 		}
 	} catch (Exception e) {
+		System.out.println(e);
 		
 	}
-
-	
 }
 	
+//	public Answer (String description, int answerCode, int subjectCode, int questionCode)
+	private void createTableAnswer() {
+	String TABLE_NAME = "answer";
+	
+	try {                                     
+		statement = connect.prepareStatement("CREATE TABLE "+ TABLE_NAME + "("
+				+ " description varchar(30),\n"
+				+ " answerCode int,\n"
+				+ " questionCode int,\n"
+				+ " subjectCode int,\n"
+				+ " PRIMARY KEY (answerCode)"
+				+ " )"
+				);
+		
+		DatabaseMetaData dbm = connect.getMetaData();
+		ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
+		
+		if(!tables.next()){
+			//table does not exist
+			statement.execute();
+			System.out.println(TABLE_NAME + " created");
+			populateAnswer();
+		}else{
+			System.out.println(TABLE_NAME + " exist already");
+		}
+	} catch (Exception e) {
+		System.out.println(e);
+		
+	}
+}
+	
+//	Question(String description, int answerCode, int subjectCode, int questionCode)
+	private void createTableQuestion() {
+		String TABLE_NAME = "question";
+		
+		try {                                     
+			statement = connect.prepareStatement("CREATE TABLE "+ TABLE_NAME + "("
+					+ " description varchar(30),\n"
+					+ " answerCode int,\n"
+					+ " questionCode int,\n"
+					+ " subjectCode int,\n"
+					+ " PRIMARY KEY (questionCode)"
+					+ " )"
+					);
+			
+			DatabaseMetaData dbm = connect.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
+			
+			if(!tables.next()){
+				//table does not exist
+				statement.execute();
+				System.out.println(TABLE_NAME + " created");
+				populateQuestion();
+				
+			}else{
+				System.out.println(TABLE_NAME + " exist already");
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			
+		}
+	}
+	
+//	public Subject(String subjectName, int subjectCode)
+	private void createTablesubject() {
+		String TABLE_NAME = "subject";
+		
+		try {                                     
+			statement = connect.prepareStatement("CREATE TABLE "+ TABLE_NAME + "("
+					+ " subjectName varchar(30),\n"
+					+ " subjectCode varchar(30),\n"
+					+ " PRIMARY KEY (subjectCode)"
+					+ " )"
+					);
+			
+			DatabaseMetaData dbm = connect.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
+			
+			if(!tables.next()){
+				//table does not exist
+				statement.execute();
+				System.out.println(TABLE_NAME + " created");
+				populateSubject();
+			}else{
+				System.out.println(TABLE_NAME + " exist already");
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			
+		}
+	}
+	
+//	User(int userId, String name, int score)
 	public User getUser(String query) {
 		User user = null;
 		try {
@@ -121,12 +200,12 @@ public class DatabaseHandler {
 			statement =connect.prepareStatement(query);
 			result = statement.executeQuery();
 			while(result.next()){
-//				user = new User(
-//						result.getInt("studentNumber"),
-//						result.getString("username"),
-//						result.getString("password"),
-//						result.getString("email")
-//						);
+				user = new User(
+						result.getInt("userId"),
+						result.getString("name"),
+						result.getInt("score")
+						
+						);
 			}
 			
 			return user;
@@ -135,61 +214,183 @@ public class DatabaseHandler {
 			return null;
 		}
 	}
-
-
-	public boolean checkUser(String query) {
-		int sn=-1;
+	
+//	public Answer (String description, int answerCode, int subjectCode, int questionCode)
+	public ArrayList<Answer> getAnswers(String query) {
+		Answer answer = null;
+		ArrayList<Answer> answers = new ArrayList<Answer>();
 		try {
 			ResultSet result;
 			statement =connect.prepareStatement(query);
 			result = statement.executeQuery();
 			while(result.next()){
-				sn = result.getInt(1);					
+				answer = new Answer(
+						result.getString("description"),
+						result.getInt("answerCode"),
+						result.getInt("subjectCode"),
+						result.getInt("questionCode")
+						);
+				answers.add(answer);
 			}
-			if(sn == -1){
-				
-				 return false;				
-			}else{
-				return true;
-			}
+			
+			return answers;
 		} catch (SQLException e) {
 			
-			return false;
-		}	
+			return null;
+		}
 	}
 	
+//	Question(String description, int answerCode, int subjectCode, int questionCode)
+	public ArrayList<Question> getQuestions(String query) {
+		Question question = null;
+		ArrayList<Question> questions = new ArrayList<Question>();
+		try {
+			ResultSet result;
+			statement =connect.prepareStatement(query);
+			result = statement.executeQuery();
+			while(result.next()){
+				question = new Question(
+						result.getString("description"),
+						result.getInt("answerCode"),
+						result.getInt("subjectCode"),
+						result.getInt("questionCode")
+						);
+				questions.add(question);
+			}
+			
+			return questions;
+		} catch (SQLException e) {
+			
+			return null;
+		}
+	}
+	
+//	public Subject(String subjectName, int subjectCode)
+	public ArrayList<Subject> getSubjects(String query) {
+		Subject subject = null;
+		ArrayList<Subject> subjects = new ArrayList<Subject>();
+		try {
+			ResultSet result;
+			statement =connect.prepareStatement(query);
+			result = statement.executeQuery();
+			while(result.next()){
+				subject = new Subject(
+						result.getString("subjectName"),
+						result.getInt("subjectCode")
+						);
+				subjects.add(subject);
+			}
+			
+			return subjects;
+		} catch (SQLException e) {
+			
+			return null;
+		}
+	}
 
-	public boolean insert(String query, User user){
+//	User(int userId, String name, int score)
+	public boolean insertUser(String query, User user){
 		try {
 			statement = connect.prepareStatement(query);
-//			statement.setInt(1, user.getStudentNumber());
-//			statement.setString(2, user.getUsername());
-//			statement.setString(3, user.getPassword());
-//			statement.setString(4, user.getEmail());
+			statement.setString(1, user.getName());
+			statement.setFloat(2, user.getScore());
 			statement.execute();
 			return true;
 		} catch (SQLException e) {
 			return false;
 		}
 	}
-	
 
-	public boolean updateProfile(String query, User user){
-		try {
-			statement = connect.prepareStatement(query);
-//			statement.setString(1, user.getUsername());
-//			statement.setString(2, user.getPassword());
-//			statement.setInt(3, user.getStudentNumber());
-			int r = statement.executeUpdate();
-			System.out.println(r);
-			if(r>0){
-				return true;
-			}else return false;
-		} catch (SQLException e) {
+//	Question(String description, int answerCode, int subjectCode, int questionCode)
+	public boolean insertQuestion(String query, ArrayList<Question> questions){
+		
+		questions.stream().forEach(question ->{
+			try {
+				statement = connect.prepareStatement(query);
+				statement.setString(1, question.getDescription());
+				statement.setInt(2, question.getAnswerCode());
+				statement.setInt(3, question.getSubjectCode());
+				statement.setInt(4, question.getQuestionCode());
+				statement.execute();
+				isInserted = true; 
+			} catch (SQLException e) {
+				isInserted = false;
+			}
+		});
+		
+		if(!isInserted){
 			return false;
+		}else{
+			return true;
 		}
+		
 	}
 
+//	public Answer (String description, int answerCode, int subjectCode, int questionCode)
+	public boolean insertAnswer(String query, ArrayList<Answer> questions){
+		
+		questions.stream().forEach(question ->{
+			try {
+				statement = connect.prepareStatement(query);
+				statement.setString(1, question.getDescription());
+				statement.setInt(2, question.getAnswerCode());
+				statement.setInt(3, question.getSubjectCode());
+				statement.setInt(4, question.getQuestionCode());
+				statement.execute();
+				isInserted = true; 
+			} catch (SQLException e) {
+				isInserted = false;
+			}
+		});
+		
+		if(!isInserted){
+			return false;
+		}else{
+			return true;
+		}
+		
+	}
+
+//	public Subject(String subjectName, int subjectCode)
+	public boolean insertSubjecs(String query, ArrayList<Subject> subjects){
+		
+		subjects.stream().forEach(question ->{
+			try {
+				statement = connect.prepareStatement(query);
+				statement.setString(1, question.getSubjectName());
+				statement.setInt(2, question.getSubjectCode());
+				statement.execute();
+				isInserted = true; 
+			} catch (SQLException e) {
+				isInserted = false;
+			}
+		});
+		
+		if(!isInserted){
+			return false;
+		}else{
+			return true;
+		}
+		
+	}
+
+//	private void populateTables(){
+//		populateSubject();
+//		populateQuestion();
+//		populateAnswer();
+//	}
+	
+	private void populateSubject(){
+		
+	}
+
+	private void populateQuestion(){
+	
+	}
+	
+	private void populateAnswer(){
+		
+	}
+	
 	
 }
-
