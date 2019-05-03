@@ -7,3 +7,4 @@ target/
 ._*
 bin/
 bin/
+log/
