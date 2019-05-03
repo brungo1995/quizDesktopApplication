@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import org.apache.derby.impl.sql.catalog.SYSROUTINEPERMSRowFactory;
+
 import quizApp.model.Answer;
 import quizApp.model.Question;
 import quizApp.model.Subject;
@@ -295,8 +297,9 @@ public class DatabaseHandler {
 	public boolean insertUser(String query, User user){
 		try {
 			statement = connect.prepareStatement(query);
-			statement.setString(1, user.getName());
-			statement.setFloat(2, user.getScore());
+			statement.setInt(1, user.getUserId());
+			statement.setString(2, user.getName());
+			statement.setInt(3, user.getScore());
 			statement.execute();
 			return true;
 		} catch (SQLException e) {
@@ -325,6 +328,7 @@ public class DatabaseHandler {
 	}
 
 //	public Answer (String description, int answerCode, int subjectCode, int questionCode)
+//	public Answer (String description, int answerCode, int subjectCode, int questionCode)
 	public boolean insertAnswer(String query, ArrayList<Answer> questions){
 		
 		questions.stream().forEach(question ->{
@@ -347,6 +351,7 @@ public class DatabaseHandler {
 	}
 
 //	public Subject(String subjectName, int subjectCode)
+//	public Subject(String subjectName, int subjectCode)
 	public boolean insertSubjecs(String query, ArrayList<Subject> subjects){
 		
 		subjects.stream().forEach(question ->{
@@ -365,6 +370,7 @@ public class DatabaseHandler {
 		
 	}
 
+//	public Subject(String subjectName, int subjectCode)
 	private void populateSubject(){
 		ArrayList<Subject> subjects = new ArrayList<Subject>();
 		subjects.add(new Subject("Database Systems",1));
@@ -378,6 +384,27 @@ public class DatabaseHandler {
 		}		
 	}
 
+//	User(int userId, String name, int score)
+	public boolean updateScore(String query, User user){
+		try {
+			statement = connect.prepareStatement(query);
+			statement.setInt(1, user.getScore());
+			statement.setInt(2, user.getUserId());
+//			int r = statement.executeUpdate();
+
+			if(statement.executeUpdate() > 0){
+				return true;
+			}else {
+				return false;
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Failed to update score");
+			return false;
+		}
+	}
+
+	
 //	Question(String description, int answerCode, int subjectCode, int questionCode)
 	private void populateQuestion(){
 		ArrayList<Question> questions = new ArrayList<Question>();
@@ -406,6 +433,7 @@ public class DatabaseHandler {
 		}	
 	}
 	
+//	public Answer (String description, int answerCode, int subjectCode, int questionCode)
 //	 Answer (String description, int answerCode, int subjectCode, int questionCode)
 	private void populateAnswer(){
 		ArrayList<Answer> answers = new ArrayList<Answer>();
