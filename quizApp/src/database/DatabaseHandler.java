@@ -8,24 +8,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
-
-
 import org.apache.derby.impl.sql.catalog.SYSROUTINEPERMSRowFactory;
-
 import quizApp.model.*;
-=======
 import java.util.Properties;
-
 import quizApp.model.Answer;
 import quizApp.model.Question;
 import quizApp.model.Subject;
 import quizApp.model.User;
->>>>>>> f905b1fc6c53282c6241bfacf231245cff509635
 
 
 public class DatabaseHandler {
@@ -376,7 +369,7 @@ public class DatabaseHandler {
 		return isInserted;
 		
 	}
-<<<<<<< HEAD
+
 	
 	private List<Question> getQuestions(Integer subjectCode) {
 		 Question dummyQuestion = new Question("dummy question", 0, 0, 0);
@@ -399,10 +392,8 @@ public class DatabaseHandler {
 			return  null;
 		}
 	}
-}
-=======
 
-	private void populateSubject(){
+    private void populateSubject(){
 		ArrayList<Subject> subjects = new ArrayList<Subject>();
 		subjects.add(new Subject("Database Systems",1));
 		subjects.add(new Subject("Networks",2));
@@ -422,7 +413,7 @@ public class DatabaseHandler {
 		questions.add(new Question("Three terms used to define data quality",8,1,2));		
 		questions.add(new Question("Functions of the database administrator?",9,1,3));
 		questions.add(new Question("Give some examples of ways of inputting raw data",13,1,4));
-		questions.add(new Question("Name the DBA’s responsibilities?",20,1,5));
+		questions.add(new Question("Name the DBAï¿½s responsibilities?",20,1,5));
 		questions.add(new Question("What is a network?",22,2,6));
 		questions.add(new Question("What do you mean by data communication?",28,2,7));
 		questions.add(new Question("What do you mean by switching?",29,2,8));
@@ -524,7 +515,7 @@ public class DatabaseHandler {
 		answers.add(new Answer("The duration of the program",58,3,15));
 		answers.add(new Answer("Multiplicity",59,3,15));
 		answers.add(new Answer("Cleanliness of the employees",60,3,15));		
->>>>>>> f905b1fc6c53282c6241bfacf231245cff509635
+
 
 		String query = "insert into answer(description, answerCode, subjectCode, questionCode) values(?,?,?,?)";
 		if(insertAnswer(query, answers)){
