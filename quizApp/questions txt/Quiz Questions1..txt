@@ -1,0 +1,93 @@
+Database Systems Questions
+1. How many levels are there of data level confidentiality?
+a. 4
+b. 3 (Correct)
+c. 5
+d. 6
+
+2. Three terms used to define data quality
+a. Mutated, Crafteds
+b. Coding, Abstraction, 
+c. Drawing, Velocity
+d. Validity, Consistency, Accuracy(Correct)
+
+3. Functions of the database administrator?
+a. Database installation, upgrade and patching(Correct)
+b. Managing developers
+c. Setting up budgets
+d. Developing applications
+
+4. Give some examples of ways of inputting raw data
+a. Sensors, User input, Interaction(Correct)
+b. Screen output
+c. -
+d
+
+5. Name the DBA’s responsibilities?
+a. Specialised data handling
+b. Database backup and recovery
+c. Performance monitoring
+d. All of the above(Correct)
+
+Networks Questions
+1. What is a network?
+a. The apps that let you code
+b. It is a set of devices connected by communication links.
+c. A team of soccer players
+d. Best series on television
+
+2. What do you mean by data communication?
+a. Processing your data
+b. Calling your friends
+c. Exchanging of cars
+d. It is the exchange of data between two devices via some form of transmission medium such as wire cable(Correct)
+
+3. What do you mean by switching?
+a. It is a method in which communication devices are connected to one another efficiently(Correct)
+b. Switching on the light at night
+c. Turning of the main switch
+d. Switching lanes on the road
+
+4. What does HTTP stand for?
+a. Hire Television Trolling Practise
+b. HyperText Markup Language
+c. HyperText Transfer Protocol(Correct)
+d. HyperText Transmission Product
+
+5. What does VPN stand for?
+a. Virtual Private Network(Correct)
+b. Vantilation Protocol Node
+c. Vacated Pinning Navigation
+d. Virtual Privatized Namespace
+
+
+Project Management Questions
+1. What are the 4 stages of team development?
+a. Forming, Storming, Norming, Performing(Correct)
+b. Enthusiasm, Hope, Panic, Solution
+c. Forming, Solutioning, Normalizing, Communicating
+d. Direction, Motivation, Cooperation, Collaboration
+
+2. What is one of the most important skills a project manager can have?
+a. Negotiation skills
+b. Influencing skills
+c. Communication skills(Correct)
+d. Problem Solving skills
+
+3. WBS is an excellent and most effective tool that is used for tracking for?
+a. Project Resources
+b. Project Scope [Ans]
+c. Project Schedule
+d. Project Risks
+
+4. What is a project life cycle? 
+a. Repetition of decisions
+b. The logical progress through the several phases(Correct)
+c. The quality of the manager
+d. The same as a human being
+
+5. What does a project manager oversee?
+a. Business processes(Correct)
+b. The duration of the program
+c. Multiplicity
+d. Cleanliness of the employees
