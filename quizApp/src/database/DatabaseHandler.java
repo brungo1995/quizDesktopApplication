@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+
+import javax.swing.JOptionPane;
+
 import org.apache.derby.impl.sql.catalog.SYSROUTINEPERMSRowFactory;
 import quizApp.model.*;
 import java.util.Properties;
@@ -19,6 +22,7 @@ import quizApp.model.Answer;
 import quizApp.model.Question;
 import quizApp.model.Subject;
 import quizApp.model.User;
+import utils.StringUtils;
 
 
 public class DatabaseHandler {
@@ -62,10 +66,16 @@ public class DatabaseHandler {
 			return true;
 		}
 		catch (Exception e) {
-			System.out.println("couldn't create database");
+//			System.out.println("couldn't create database");
+			displayErrorMsg();
+			
 			return false;
 		}
 		
+	}
+	
+	public void displayErrorMsg() {
+		JOptionPane.showInputDialog(this, StringUtils.DATABSE_ERROR);
 	}
 	
 	private void createTables() {
@@ -301,6 +311,7 @@ public class DatabaseHandler {
 
 
 	public boolean insertUser(String query, User user){
+		System.out.println(user.getUserId() + "\t"+ user.getName()+ "\t" +user.getScore());
 		try {
 			statement = connect.prepareStatement(query);
 			statement.setInt(1, user.getUserId());
@@ -309,6 +320,7 @@ public class DatabaseHandler {
 			statement.execute();
 			return true;
 		} catch (SQLException e) {
+			System.out.println(e);
 			return false;
 		}
 	}

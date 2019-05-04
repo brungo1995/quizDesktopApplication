@@ -20,8 +20,8 @@ d. Developing applications
 4. Give some examples of ways of inputting raw data
 a. Sensors, User input, Interaction(Correct)
 b. Screen output
-c. -
-d
+c. none
+d.streaming video
 
 5. Name the DBA’s responsibilities?
 a. Specialised data handling

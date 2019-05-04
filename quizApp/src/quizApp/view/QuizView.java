@@ -54,12 +54,12 @@ public class QuizView extends JFrame {
 	private final List<JRadioButton> radioBtns =  Arrays.asList(answerRadioBtn1, answerRadioBtn2, answerRadioBtn3, answerRadioBtn4);
 	private final ButtonGroup radioGroup = new ButtonGroup();
 	
-	public QuizView(Subject subject) {
+	public QuizView(Subject subject, User user) {
 		this.subject = subject;
 		
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(0, 0, screenSize.width / 2, screenSize.height / 2);
-		
+        
         setQuizTitle(subject.getSubjectName());
         configHomepagePanel();
         configQuestionPanel();
