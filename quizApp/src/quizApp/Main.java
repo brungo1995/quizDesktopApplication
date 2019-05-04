@@ -9,9 +9,9 @@ public class Main {
 	public static void main(String[] args) {
 		DatabaseHandler.getInstance();
 		
-		Subject dummySubject = new Subject("dummySubject", 0);
+		Subject dummySubject = new Subject("Database Systems", 3);
 		new QuizView(dummySubject);
-
+		
 	}
 
 }

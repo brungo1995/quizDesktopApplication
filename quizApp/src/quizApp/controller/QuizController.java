@@ -17,7 +17,7 @@ public class QuizController {
 		Quiz quiz = DatabaseHandler.getInstance().getQuiz(subjectCode);
 		
 		if (quiz != null) {
-			view.displayQuiz(quiz);
+			view.setUpQuiz(quiz);
 		} else {
 			view.displayErrorMsg();
 		}

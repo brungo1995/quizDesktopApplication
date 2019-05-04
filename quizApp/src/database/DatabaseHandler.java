@@ -75,7 +75,7 @@ public class DatabaseHandler {
 		createTablesubject();
 	}
 
-	//	User(int userId, String name, int score)
+
 	private void createTableUser() {
 	String TABLE_NAME = "users";
 	
@@ -92,7 +92,6 @@ public class DatabaseHandler {
 		ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
 		
 		if(!tables.next()){
-			//table does not exist
 			statement.execute();
 			System.out.println(TABLE_NAME + " created");
 			
@@ -105,9 +104,7 @@ public class DatabaseHandler {
 	}
 }
 	
-//	public Answer (String description, int answerCode, int subjectCode, int questionCode)
 	private void createTableAnswer() {
-//		populateAnswer();
 	String TABLE_NAME = "answer";
 	
 	try {                                     
@@ -124,11 +121,10 @@ public class DatabaseHandler {
 		ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
 		
 		if(!tables.next()){
-			//table does not exist
 			statement.execute();
 			System.out.println(TABLE_NAME + " created");
 			populateAnswer();
-		}else{
+		} else {
 			System.out.println(TABLE_NAME + " exist already");
 		}
 	} catch (Exception e) {
@@ -137,9 +133,7 @@ public class DatabaseHandler {
 	}
 }
 	
-//	Question(String description, int answerCode, int subjectCode, int questionCode)
 	private void createTableQuestion() {
-//		populateQuestion();
 		String TABLE_NAME = "question";
 		
 		try {                                     
@@ -156,7 +150,6 @@ public class DatabaseHandler {
 			ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
 			
 			if(!tables.next()){
-				//table does not exist
 				statement.execute();
 				System.out.println(TABLE_NAME + " created");
 				populateQuestion();
@@ -170,9 +163,8 @@ public class DatabaseHandler {
 		}
 	}
 	
-//	public Subject(String subjectName, int subjectCode)
+
 	private void createTablesubject() {
-//		populateSubject();
 		String TABLE_NAME = "subject";
 		
 		try {                                     
@@ -187,7 +179,6 @@ public class DatabaseHandler {
 			ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
 			
 			if(!tables.next()){
-				//table does not exist
 				statement.execute();
 				System.out.println(TABLE_NAME + " created");
 				populateSubject();
@@ -200,7 +191,6 @@ public class DatabaseHandler {
 		}
 	}
 	
-//	User(int userId, String name, int score)
 	public User getUser(String query) {
 		User user = null;
 		try {
@@ -223,7 +213,20 @@ public class DatabaseHandler {
 		}
 	}
 	
-//	public Answer (String description, int answerCode, int subjectCode, int questionCode)
+	public Quiz getQuiz(Integer subjectCode) {
+		String QUERY_ANSWER = "select * from answer where subjectCode = " + subjectCode;
+		String QUERY_QUESTION = "select * from question where subjectCode = " + subjectCode;
+		List<Answer> answers = getAnswers(QUERY_ANSWER);
+		List <Question> questions = getQuestions(QUERY_QUESTION);
+		
+		
+		if (answers != null && questions != null) {
+			return  new Quiz (questions, answers, subjectCode);
+		} else  {
+			return  null;
+		}
+	}
+	
 	public ArrayList<Answer> getAnswers(String query) {
 		Answer answer = null;
 		ArrayList<Answer> answers = new ArrayList<Answer>();
@@ -248,7 +251,7 @@ public class DatabaseHandler {
 		}
 	}
 	
-//	Question(String description, int answerCode, int subjectCode, int questionCode)
+
 	public ArrayList<Question> getQuestions(String query) {
 		Question question = null;
 		ArrayList<Question> questions = new ArrayList<Question>();
@@ -273,7 +276,7 @@ public class DatabaseHandler {
 		}
 	}
 	
-//	public Subject(String subjectName, int subjectCode)
+
 	public ArrayList<Subject> getSubjects(String query) {
 		Subject subject = null;
 		ArrayList<Subject> subjects = new ArrayList<Subject>();
@@ -296,7 +299,7 @@ public class DatabaseHandler {
 		}
 	}
 
-//	User(int userId, String name, int score)
+
 	public boolean insertUser(String query, User user){
 		try {
 			statement = connect.prepareStatement(query);
@@ -309,7 +312,7 @@ public class DatabaseHandler {
 		}
 	}
 
-//	Question(String description, int answerCode, int subjectCode, int questionCode)
+
 	public boolean insertQuestion(String query, ArrayList<Question> questions){
 		
 		for(int x = 0; x < questions.size(); x++){
@@ -329,7 +332,6 @@ public class DatabaseHandler {
 		return isInserted;
 	}
 
-//	public Answer (String description, int answerCode, int subjectCode, int questionCode)
 	public boolean insertAnswer(String query, ArrayList<Answer> questions){
 		
 		questions.stream().forEach(question ->{
@@ -351,7 +353,6 @@ public class DatabaseHandler {
 		
 	}
 
-//	public Subject(String subjectName, int subjectCode)
 	public boolean insertSubjecs(String query, ArrayList<Subject> subjects){
 		
 		subjects.stream().forEach(question ->{
@@ -370,30 +371,8 @@ public class DatabaseHandler {
 		
 	}
 
-	
-	private List<Question> getQuestions(Integer subjectCode) {
-		 Question dummyQuestion = new Question("dummy question", 0, 0, 0);
-         return Arrays.asList(dummyQuestion);
-	}
-	
-	private List<Answer> getAnswers(Integer subjectCode){
-		 Answer dummyAnswer = new Answer("dummy answer", 0, 0, 0);
-		 return Arrays.asList (dummyAnswer);
-	}
-	
-	public Quiz getQuiz(Integer subjectCode) {
-		List<Answer> answers = getAnswers(subjectCode);
-		List <Question> questions = getQuestions(subjectCode);
-		
-		
-		if (answers != null && questions != null) {
-			return  new Quiz (questions, answers, subjectCode);
-		} else  {
-			return  null;
-		}
-	}
 
-    private void populateSubject(){
+     private void populateSubject(){
 		ArrayList<Subject> subjects = new ArrayList<Subject>();
 		subjects.add(new Subject("Database Systems",1));
 		subjects.add(new Subject("Networks",2));
@@ -406,7 +385,6 @@ public class DatabaseHandler {
 		}		
 	}
 
-//	Question(String description, int answerCode, int subjectCode, int questionCode)
 	private void populateQuestion(){
 		ArrayList<Question> questions = new ArrayList<Question>();
 		questions.add(new Question("How many levels are there of data level confidentiality?",2,1,1));		
@@ -424,17 +402,16 @@ public class DatabaseHandler {
 		questions.add(new Question("WBS is an excellent and most effective tool that is used for tracking for?",50,3,13));
 		questions.add(new Question("What is a project life cycle? ",54,3,14));
 		questions.add(new Question("What does a project manager oversee?",57,3,15));
-//		System.out.println(isInserted);
+
 		String query = "insert into question(description, answerCode, subjectCode, questionCode) values(?,?,?,?)";
 		if(insertQuestion(query, questions)){
 			System.out.println("inserted questions");
 		}else{
 			System.out.println("failed to insert questions");
-//			System.out.println(isInserted);
+
 		}	
 	}
 	
-//	 Answer (String description, int answerCode, int subjectCode, int questionCode)
 	private void populateAnswer(){
 		ArrayList<Answer> answers = new ArrayList<Answer>();
 		answers.add(new Answer("4",1,1,1));
@@ -463,7 +440,6 @@ public class DatabaseHandler {
 		answers.add(new Answer("All of the above",20,1,5));
 		
 		
-//		 Answer (String description, int answerCode, int subjectCode, int questionCode)
 		answers.add(new Answer("The apps that let you code",21,2,6));
 		answers.add(new Answer("It is a set of devices connected by communication links.",22,2,6));
 		answers.add(new Answer("A team of soccer players",23,2,6));
@@ -490,7 +466,6 @@ public class DatabaseHandler {
 		answers.add(new Answer("Virtual Privatized Namespace",40,2,10));
 		
 		
-//		 Answer (String description, int answerCode, int subjectCode, int questionCode)
 		answers.add(new Answer("Forming, Storming, Norming, Performing",41,3,11));
 		answers.add(new Answer("Enthusiasm, Hope, Panic, Solution",42,3,11));
 		answers.add(new Answer("Forming, Solutioning, Normalizing, Communicating",43,3,11));
@@ -524,6 +499,4 @@ public class DatabaseHandler {
 			System.out.println("failed to insert answers");
 		}	
 	}
-	
-	
 }

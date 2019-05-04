@@ -11,7 +11,10 @@ import utils.UiUtils;
 import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -26,10 +29,11 @@ public class QuizView extends JFrame {
 	private Subject subject;
 	private List<Question> questions; 
 	private List <Answer> answers;
-	private List <Answer> userSelectedAnswers;
+	private List <String> userSelectedAnswers =  new ArrayList<String>();
 	
 	final private String WELCOME_STRING = "Welcome to the subject: ";
 	final private String HOMEPAGE_STRING = "Home page";
+	final private String NEXT_STRING = "Next";
 	
 	private JPanel quiztitlePanel = new JPanel();;
 	private JLabel welcomeLabel = new JLabel(WELCOME_STRING);;
@@ -37,16 +41,19 @@ public class QuizView extends JFrame {
 	
 	private JPanel quizHomepagePanel = new JPanel();
 	private JButton homepageBtn = new JButton(HOMEPAGE_STRING);
+	private JButton nextBtn = new JButton(NEXT_STRING);
 	
 	private JPanel quizQuestionPanel = new JPanel();
-	private JLabel questionNumberLabel = new JLabel("Question 1. ");
-	private JLabel questionDescriptionLabel = new JLabel("Dummy question Dummy question ? ");
+	private JLabel questionNumberLabel = new JLabel();
+	private JLabel questionDescriptionLabel = new JLabel();
 	private int currentQuestion = 0;
 	
-	private final JRadioButton answerRadioBtn1 = new JRadioButton("New radio button");
-	private final JRadioButton answerRadioBtn2 = new JRadioButton("New radio button");
-	private final JRadioButton answerRadioBtn3 = new JRadioButton("New radio button");
-	private final JRadioButton answerRadioBtn4 = new JRadioButton("New radio button");
+	private final JRadioButton answerRadioBtn1 = new JRadioButton();
+	private final JRadioButton answerRadioBtn2 = new JRadioButton();
+	private final JRadioButton answerRadioBtn3 = new JRadioButton();
+	private final JRadioButton answerRadioBtn4 = new JRadioButton();
+	private final List<JRadioButton> radioBtns =  Arrays.asList(answerRadioBtn1, answerRadioBtn2, answerRadioBtn3, answerRadioBtn4);
+	private final ButtonGroup radioGroup = new ButtonGroup();
 	
 	public QuizView(Subject subject) {
 		this.subject = subject;
@@ -63,7 +70,7 @@ public class QuizView extends JFrame {
 		UiUtils.closeWindow(this);
 		setVisible(true);
 		
-     }
+    }
 	
 	private void fetchQuiz(Integer subjectCode) {
 		if (controller != null &&  subjectCode != null) {
@@ -71,19 +78,64 @@ public class QuizView extends JFrame {
 		}
 	}
 	
-	public void displayQuiz(Quiz quiz) {
+	public void setUpQuiz(Quiz quiz) {
 		questions = quiz.getQuestions();
 		answers = quiz.getAnswers();
+		Map <Question, List<Answer>> mapOfQuestionAnswers = mapQuestionAndAnswers (questions, answers);
 		
 		if (!questions.isEmpty() && !answers.isEmpty()) {
+			displayQuestion(questions.get(currentQuestion), mapOfQuestionAnswers, currentQuestion);
+		}
+		
+		nextBtn.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  fillUserAnswers(UiUtils.getSelectedButtonText(radioGroup));
+				  ++currentQuestion;
+				  
+				  if (currentQuestion <= 4) {
+					  radioGroup.clearSelection();
+					  displayQuestion(questions.get(currentQuestion), mapOfQuestionAnswers, currentQuestion);
+				  } else {
+					  System.out.println("gotoScoreScreen() method called. userAnswers:  " + userSelectedAnswers);
+					  //gotoScoreScreen();
+				  }
+			   } 
+		});
+	}
+	
+	private Map<Question, List<Answer>> mapQuestionAndAnswers(List<Question> questions, List<Answer> answers) {
+		Map <Question, List<Answer>> map = new HashMap<Question, List<Answer>>();
+		
+		for (Question question : questions) {
+			List<Answer> questionAnswers =  new ArrayList<>();
+			for (Answer answer : answers) {
+				if (answer.getQuestionCode() == question.getQuestionCode()) {
+					questionAnswers.add(answer);
+				}
+				map.put(question, questionAnswers);
+			}
+		 }
+		
+		return map;
+	}
+	
+	private void displayQuestion(Question question, Map <Question, List<Answer>> mapOfQuestionAnswers, int position ) {
+		if (question != null) {
 			int questionNumber = currentQuestion + 1;
 			questionNumberLabel.setText("Question " + questionNumber + ".");
 			questionDescriptionLabel.setText(questions.get(currentQuestion).getDescription());
 			
-			answerRadioBtn1.setText(answers.get(currentQuestion).getDescription());
+			List<Answer> questionAnswers = mapOfQuestionAnswers.get(question);
+			fillRadioBtnWithAnswers(questionAnswers);
 		}
-		
-		
+	}
+	
+	private void fillRadioBtnWithAnswers(List<Answer> answers) {
+		if (answers != null && !answers.isEmpty()) {
+			for (int position = 0; position < answers.size(); ++position) {
+				radioBtns.get(position).setText(answers.get(position).getDescription());
+			}
+		}
 	}
 	
 	public void displayErrorMsg() {
@@ -114,6 +166,9 @@ public class QuizView extends JFrame {
 		
 		setUpQuestionDescriptUi();
 		setUpRadioBtn();  
+		
+		nextBtn.setBounds(258, 256, 117, 29);
+		quizQuestionPanel.add(nextBtn);
 	}
 	
 	private void setUpQuestionDescriptUi() {
@@ -130,15 +185,26 @@ public class QuizView extends JFrame {
 		answerRadioBtn1.setBounds(90, 50, 500, 23);
 		quizQuestionPanel.add(answerRadioBtn1);
 		
-		answerRadioBtn2.setBounds(90, 100, 141, 23);
+		answerRadioBtn2.setBounds(90, 100, 500, 23);
 		quizQuestionPanel.add(answerRadioBtn2);
 		
-	    answerRadioBtn3.setBounds(90, 150, 141, 23);
+	    answerRadioBtn3.setBounds(90, 150, 500, 23);
 		quizQuestionPanel.add(answerRadioBtn3);
 		
-		answerRadioBtn4.setBounds(90, 200, 141, 23);
+		answerRadioBtn4.setBounds(90, 200, 500, 23);
 		quizQuestionPanel.add(answerRadioBtn4);
 		
-		
-	}
+		radioGroup.add(answerRadioBtn1);
+		radioGroup.add(answerRadioBtn2);
+		radioGroup.add(answerRadioBtn3);
+		radioGroup.add(answerRadioBtn4);
+	 }
+	
+	 private void fillUserAnswers(String answerSelected) {
+		 if (answerSelected != null) {
+			  userSelectedAnswers.add(answerSelected);
+		  } else  {
+			  userSelectedAnswers.add("");
+		  }
+	 }
 }

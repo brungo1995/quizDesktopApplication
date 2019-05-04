@@ -1,6 +1,8 @@
 package utils;
 
 import java.awt.event.*;
+import java.util.Enumeration;
+
 import javax.swing.*;
 import static javax.swing.WindowConstants.*;
 
@@ -32,5 +34,18 @@ public class UiUtils {
 	           }
 	        }
 	        return false;
+	    }
+	 
+	
+	 public static String getSelectedButtonText(ButtonGroup buttonGroup) {
+	        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+	            AbstractButton button = buttons.nextElement();
+
+	            if (button.isSelected()) {
+	                return button.getText();
+	            }
+	        }
+
+	        return null;
 	    }
 }
