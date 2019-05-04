@@ -9,6 +9,7 @@ import quizApp.Main;
 import quizApp.model.Subject;
 import quizApp.model.User;
 import quizApp.view.QuizView;
+import quizApp.view.UserView;
 
 import static javax.swing.WindowConstants.*;
 
@@ -54,8 +55,6 @@ public class UiUtils {
 	 }
 	 
 	 public static void gotoMenuScreen() {
-		 Subject dummySubject = new Subject("Database Systems", 2);
-		 User dummyUser = new User (216012678, "dummy user", 0);
-		 new QuizView(dummySubject, dummyUser);
+		 new UserView();
 	 }
 }
