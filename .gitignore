@@ -8,3 +8,5 @@ target/
 bin/
 bin/
 log/
+.metadata/
+recommenders/
