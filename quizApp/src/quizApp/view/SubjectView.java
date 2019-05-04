@@ -9,9 +9,12 @@ import quizApp.controller.SubjectController;
 import quizApp.model.Answer;
 import quizApp.model.Subject;
 import quizApp.model.User;
+import utils.StringUtils;
 import utils.UiUtils;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +23,8 @@ import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SubjectView extends JFrame{
 	public User user;
@@ -51,17 +56,14 @@ public class SubjectView extends JFrame{
 		getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
-		JRadioButton rdbtnSubject1 = new JRadioButton("hello");
 		rdbtnSubject1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		rdbtnSubject1.setBounds(6, 31, 336, 23);
 		panel_2.add(rdbtnSubject1);
 		
-		JRadioButton rdbtnSubject2 = new JRadioButton("");
 		rdbtnSubject2.setFont(new Font("Tahoma", Font.BOLD, 12));
 		rdbtnSubject2.setBounds(6, 72, 336, 23);
 		panel_2.add(rdbtnSubject2);
 		
-		JRadioButton rdbtnSubject3 = new JRadioButton("");
 		rdbtnSubject3.setFont(new Font("Tahoma", Font.BOLD, 12));
 		rdbtnSubject3.setBounds(6, 115, 336, 23);
 		panel_2.add(rdbtnSubject3);
@@ -111,9 +113,35 @@ public class SubjectView extends JFrame{
 		getContentPane().add(lblSelectASubject);
 
 		JButton btnNewButton = new JButton("Play");
+		
+
+		btnNewButton.addActionListener(new ActionListener() {
+			Subject subject = null;
+			public void actionPerformed(ActionEvent arg0) {
+				String subjectName = UiUtils.getSelectedButtonText(radioGroup);
+				if(subjectName != null){
+					subject = subjects.stream()
+				            .filter(x -> x.getSubjectName().equals(subjectName) )
+				            .findFirst()
+				            .get();
+					
+					dispose();
+					new QuizView(subject, user);
+				
+				}else{
+					displayErrorMsg();
+				}
+			}
+		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNewButton.setBounds(321, 343, 89, 23);
 		getContentPane().add(btnNewButton);
 		UiUtils.closeWindow(this);
 	}
+
+
+public void displayErrorMsg() {
+	JOptionPane.showMessageDialog(this, StringUtils.USER_SELECT_SUBJECT);
+}
+
 }

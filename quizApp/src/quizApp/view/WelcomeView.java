@@ -19,7 +19,7 @@ public class WelcomeView extends JFrame {
 	public WelcomeView() {
 
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		setBounds(0, 0, screenSize.width / 2, screenSize.height / 2);
+		setBounds(0, 0, 785, 497);
 		initWelcomeView();
 		setVisible(true);
 		
