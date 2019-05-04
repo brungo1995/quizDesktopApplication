@@ -8,16 +8,15 @@ import javax.swing.JFrame;
 import quizApp.controller.*;
 import quizApp.model.Answer;
 import quizApp.model.Question;
+import quizApp.model.Subject;
+import quizApp.model.User;
 import utils.StringUtils;
 import utils.UiUtils;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.JButton;
@@ -26,10 +25,12 @@ import java.awt.event.ActionEvent;
 
 public class ResultView extends JFrame {
 	private final ResultController controller = new ResultController(this); 
+	
+	private User user;
+	private Subject subject;
 	private List<String> userSelection;
 	private List<Question> questions;
 	private Map<Question, List<Answer>> mapOfQuestionAnswers;
-	
 	
 	private JPanel restartPanel = new JPanel();
 	private JPanel scorePanel = new JPanel();
@@ -39,7 +40,9 @@ public class ResultView extends JFrame {
 	private JButton restartBtn = new JButton(StringUtils.PLAY_AGAIN_STRING);
 	private final JButton btnSeeMemo = new JButton(StringUtils.SEE_MEMO_STRING);
 	
-	public ResultView(List<String> userSelection, List<Question> questions, Map<Question, List<Answer>> mapOfQuestionAnswers ) {
+	public ResultView(User user, Subject subject, List<String> userSelection, List<Question> questions, Map<Question, List<Answer>> mapOfQuestionAnswers ) {
+		this.user = user;
+		this.subject = subject;
 		this.userSelection = userSelection;
 		this.questions = questions;
 		this.mapOfQuestionAnswers = mapOfQuestionAnswers;
@@ -48,7 +51,7 @@ public class ResultView extends JFrame {
         setBounds(0, 0, screenSize.width / 2, screenSize.height / 2);
 		
         configScorePanel();
-        configRestart();
+        configRestartPanel();
         calculateScore();
 		
 		setVisible(true);
@@ -65,12 +68,14 @@ public class ResultView extends JFrame {
 		 getContentPane().add(scorePanel, BorderLayout.CENTER);
 	}
 	
-	private void configRestart() {
+	private void configRestartPanel() {
 		restartBtn.setBounds(225, 280, 117, 29);
 		restartPanel.setBackground(UIManager.getColor("InternalFrame.borderLight"));
 		restartPanel.add(restartBtn);
 		restartPanel.add(btnSeeMemo);
 		getContentPane().add(restartPanel, BorderLayout.SOUTH);
+		
+		restartBtnClick();
 	}
 	
 	public void calculateScore() {
@@ -83,11 +88,20 @@ public class ResultView extends JFrame {
 		System.out.println("score " + score);
 		
 		if (score != null) {
-			thankYouText.setText(StringUtils.THANK_YOU_FOR_LEARNING_STRING + " Elie");
+			thankYouText.setText(StringUtils.THANK_YOU_FOR_LEARNING_STRING + " " + subject.getSubjectName()+ ", " + user.getName() + ".");
 			scoreText.setText(StringUtils.YOUR_SCORE_STRING + score);
 		} else {
 			JOptionPane.showMessageDialog(this, StringUtils.ERROR_STRING);
 		}
+	}
+	
+	private void restartBtnClick() {
+		restartBtn.addActionListener( new ActionListener() {
+			 public void actionPerformed(ActionEvent e) { 
+				 dispose();
+				 UiUtils.gotoMenuScreen();
+			 }
+		});
 	}
 	
 	public void generateMemo(Map<Question, List<Answer>> mapOfQuestionAnswers) {

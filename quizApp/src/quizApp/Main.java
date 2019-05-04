@@ -3,6 +3,7 @@ package quizApp;
 import database.Controller;
 import database.DatabaseHandler;
 import quizApp.model.Subject;
+import quizApp.model.User;
 import quizApp.view.QuizView;
 
 public class Main {
@@ -11,8 +12,7 @@ public class Main {
 		Controller.handler = DatabaseHandler.getInstance();
 		
 		Subject dummySubject = new Subject("Database Systems", 2);
-		new QuizView(dummySubject);
-		
+		User dummyUser = new User(216012678, "dummy user", 0);
+		new QuizView(dummySubject, dummyUser);
 	}
-
 }

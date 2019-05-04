@@ -30,6 +30,7 @@ public class QuizView extends JFrame {
 	private final QuizController controller = new QuizController(this); 
 	
 	private Subject subject;
+	private User user;
 	private List<Question> questions; 
 	private List <Answer> answers;
 	private List <String> userSelection =  new ArrayList<String>();
@@ -54,8 +55,9 @@ public class QuizView extends JFrame {
 	private final List<JRadioButton> radioBtns =  Arrays.asList(answerRadioBtn1, answerRadioBtn2, answerRadioBtn3, answerRadioBtn4);
 	private final ButtonGroup radioGroup = new ButtonGroup();
 	
-	public QuizView(Subject subject) {
+	public QuizView(Subject subject, User user) {
 		this.subject = subject;
+		this.user = user;
 		
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(0, 0, screenSize.width / 2, screenSize.height / 2);
@@ -147,6 +149,7 @@ public class QuizView extends JFrame {
 		quizHomepagePanel.setBackground(UIManager.getColor("InternalFrame.borderLight"));
 		getContentPane().add(quizHomepagePanel, BorderLayout.SOUTH);
 		quizHomepagePanel.add(homepageBtn);
+		onHomeBtnClick();
 	}
 	
 	private void configQuestionPanel() {
@@ -192,6 +195,15 @@ public class QuizView extends JFrame {
 	
 	private void gotoResultScreen(List<String> userSelection, List<Question> questions, Map<Question, List<Answer>> mapOfQuestionAnswers ) {
 		 this.dispose();
-		 new ResultView (userSelection, questions, mapOfQuestionAnswers);
+		 new ResultView (user, subject, userSelection, questions, mapOfQuestionAnswers);
+	}
+	
+	private void onHomeBtnClick() {
+		homepageBtn.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent e) { 
+				 dispose();
+				 UiUtils.gotoMenuScreen();
+			 }
+		});
 	}
 }

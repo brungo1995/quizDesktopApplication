@@ -25,10 +25,9 @@ public class ResultController {
 					if (answer.getDescription() == userSelection.get(position)) {
 						score += 1;
 					}
+					}
 				}
-			}
 		}
-		
 		view.displayResult(score);
 	}
 	
