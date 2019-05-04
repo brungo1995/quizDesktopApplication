@@ -10,6 +10,8 @@ public class StringUtils {
 	final static public String SEE_MEMO_STRING = "See Memo";
 	final static public String THANK_YOU_FOR_LEARNING_STRING = "Thank you for learning";
 	final static public String YOUR_SCORE_STRING = "Your score is ";
+	final static public String  QUESTION_STRING = "Question ";
+	final static public String ANSWER_STRING = "\nAnswer: ";
 	
 	private StringUtils() {
 		

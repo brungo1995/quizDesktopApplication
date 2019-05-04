@@ -28,7 +28,23 @@ public class QuizUtils {
 				map.put(question, questionAnswers);
 			}
 		 }
-		
 		return map;
+	}
+	
+	static public List<Answer> retrieCorrectAnswersFromMap(Map<Question, List<Answer>> mapOfQuestionAnswers) {
+		ArrayList <Question> questions = new ArrayList<Question>(mapOfQuestionAnswers.keySet());
+		List<Answer> correctAnswers =  new ArrayList<>(); 
+		
+		for (Question question : questions) {
+			List<Answer> questionAnswers = mapOfQuestionAnswers.get(question);
+			
+			for (Answer answer : questionAnswers) {
+				
+				if (answer.getAnswerCode() == question.getAnswerCode()) {
+					correctAnswers.add(answer);
+				}
+			}
+		}
+		return  correctAnswers;
 	}
 }
