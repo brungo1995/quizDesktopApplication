@@ -30,11 +30,12 @@ public class QuizView extends JFrame {
 	private final QuizController controller = new QuizController(this); 
 	
 	private Subject subject;
+	private User user;
 	private List<Question> questions; 
 	private List <Answer> answers;
-	private List <String> userSelectedAnswers =  new ArrayList<String>();
+	private List <String> userSelection =  new ArrayList<String>();
 
-	private JPanel quiztitlePanel = new JPanel();;
+	private JPanel quiztitlePanel = new JPanel();
 	private JLabel welcomeLabel = new JLabel(StringUtils.WELCOME_STRING);;
 	private JLabel subjectLabel; 
 	
@@ -54,8 +55,9 @@ public class QuizView extends JFrame {
 	private final List<JRadioButton> radioBtns =  Arrays.asList(answerRadioBtn1, answerRadioBtn2, answerRadioBtn3, answerRadioBtn4);
 	private final ButtonGroup radioGroup = new ButtonGroup();
 	
-	public QuizView(Subject subject) {
+	public QuizView(Subject subject, User user) {
 		this.subject = subject;
+		this.user = user;
 		
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(0, 0, screenSize.width / 2, screenSize.height / 2);
@@ -95,14 +97,12 @@ public class QuizView extends JFrame {
 					  radioGroup.clearSelection();
 					  displayQuestion(questions.get(currentQuestion), mapOfQuestionAnswers, currentQuestion);
 				  } else {
-					  System.out.println("gotoScoreScreen() method called. userAnswers:  " + userSelectedAnswers);
-					  //gotoScoreScreen();
+					  gotoResultScreen(userSelection, questions, mapOfQuestionAnswers);
 				  }
 			   } 
 		});
 	}
 	
-
 	private void displayQuestion(Question question, Map <Question, List<Answer>> mapOfQuestionAnswers, int position ) {
 		if (question != null) {
 			int questionNumber = currentQuestion + 1;
@@ -124,9 +124,9 @@ public class QuizView extends JFrame {
 	
 	private void fillUserAnswers(String answerSelected) {
 		 if (answerSelected != null) {
-			  userSelectedAnswers.add(answerSelected);
+			  userSelection.add(answerSelected);
 		  } else  {
-			  userSelectedAnswers.add("");
+			  userSelection.add("");
 		  }
 	 }
 	
@@ -149,6 +149,7 @@ public class QuizView extends JFrame {
 		quizHomepagePanel.setBackground(UIManager.getColor("InternalFrame.borderLight"));
 		getContentPane().add(quizHomepagePanel, BorderLayout.SOUTH);
 		quizHomepagePanel.add(homepageBtn);
+		onHomeBtnClick();
 	}
 	
 	private void configQuestionPanel() {
@@ -174,16 +175,16 @@ public class QuizView extends JFrame {
 	}
 	
 	private void configRadioBtn() {
-		answerRadioBtn1.setBounds(90, 50, 500, 23);
+		answerRadioBtn1.setBounds(20, 50, 600, 23);
 		quizQuestionPanel.add(answerRadioBtn1);
 		
-		answerRadioBtn2.setBounds(90, 100, 500, 23);
+		answerRadioBtn2.setBounds(20, 100, 600, 23);
 		quizQuestionPanel.add(answerRadioBtn2);
 		
-	    answerRadioBtn3.setBounds(90, 150, 500, 23);
+	    answerRadioBtn3.setBounds(20, 150, 600, 23);
 		quizQuestionPanel.add(answerRadioBtn3);
 		
-		answerRadioBtn4.setBounds(90, 200, 500, 23);
+		answerRadioBtn4.setBounds(20, 200, 600, 23);
 		quizQuestionPanel.add(answerRadioBtn4);
 		
 		radioGroup.add(answerRadioBtn1);
@@ -191,4 +192,18 @@ public class QuizView extends JFrame {
 		radioGroup.add(answerRadioBtn3);
 		radioGroup.add(answerRadioBtn4);
 	 }
+	
+	private void gotoResultScreen(List<String> userSelection, List<Question> questions, Map<Question, List<Answer>> mapOfQuestionAnswers ) {
+		 this.dispose();
+		 new ResultView (user, subject, userSelection, questions, mapOfQuestionAnswers);
+	}
+	
+	private void onHomeBtnClick() {
+		homepageBtn.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent e) { 
+				 dispose();
+				 UiUtils.gotoMenuScreen();
+			 }
+		});
+	}
 }

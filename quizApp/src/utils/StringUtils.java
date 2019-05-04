@@ -6,6 +6,10 @@ public class StringUtils {
 	final static public String HOMEPAGE_STRING = "Home page";
 	final static public String NEXT_STRING = "Next";
 	final static public String ERROR_STRING = "Error while fetching data from db";
+	final static public String PLAY_AGAIN_STRING = "Play Again";
+	final static public String SEE_MEMO_STRING = "See Memo";
+	final static public String THANK_YOU_FOR_LEARNING_STRING = "Thank you for learning";
+	final static public String YOUR_SCORE_STRING = "Your score is ";
 	
 	private StringUtils() {
 		
