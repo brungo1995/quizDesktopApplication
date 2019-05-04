@@ -76,6 +76,7 @@ public class ResultView extends JFrame {
 		getContentPane().add(restartPanel, BorderLayout.SOUTH);
 		
 		restartBtnClick();
+		seeMemoBtnClick();
 	}
 	
 	public void calculateScore() {
@@ -104,7 +105,16 @@ public class ResultView extends JFrame {
 		});
 	}
 	
-	public void generateMemo(Map<Question, List<Answer>> mapOfQuestionAnswers) {
-		
+	
+	private void seeMemoBtnClick() {
+		btnSeeMemo.addActionListener(new ActionListener () {
+			public void actionPerformed(ActionEvent e) {
+				gotoMemo(mapOfQuestionAnswers);
+			}
+		});
+	}
+	
+	public void gotoMemo(Map<Question, List<Answer>> mapOfQuestionAnswers) {
+		new MemoView(mapOfQuestionAnswers);
 	}
 }
