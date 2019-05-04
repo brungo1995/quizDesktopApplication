@@ -32,9 +32,9 @@ public class QuizView extends JFrame {
 	private Subject subject;
 	private List<Question> questions; 
 	private List <Answer> answers;
-	private List <String> userSelectedAnswers =  new ArrayList<String>();
+	private List <String> userSelection =  new ArrayList<String>();
 
-	private JPanel quiztitlePanel = new JPanel();;
+	private JPanel quiztitlePanel = new JPanel();
 	private JLabel welcomeLabel = new JLabel(StringUtils.WELCOME_STRING);;
 	private JLabel subjectLabel; 
 	
@@ -95,14 +95,12 @@ public class QuizView extends JFrame {
 					  radioGroup.clearSelection();
 					  displayQuestion(questions.get(currentQuestion), mapOfQuestionAnswers, currentQuestion);
 				  } else {
-					  System.out.println("gotoScoreScreen() method called. userAnswers:  " + userSelectedAnswers);
-					  //gotoScoreScreen();
+					  gotoResultScreen(userSelection, questions, mapOfQuestionAnswers);
 				  }
 			   } 
 		});
 	}
 	
-
 	private void displayQuestion(Question question, Map <Question, List<Answer>> mapOfQuestionAnswers, int position ) {
 		if (question != null) {
 			int questionNumber = currentQuestion + 1;
@@ -124,9 +122,9 @@ public class QuizView extends JFrame {
 	
 	private void fillUserAnswers(String answerSelected) {
 		 if (answerSelected != null) {
-			  userSelectedAnswers.add(answerSelected);
+			  userSelection.add(answerSelected);
 		  } else  {
-			  userSelectedAnswers.add("");
+			  userSelection.add("");
 		  }
 	 }
 	
@@ -191,4 +189,9 @@ public class QuizView extends JFrame {
 		radioGroup.add(answerRadioBtn3);
 		radioGroup.add(answerRadioBtn4);
 	 }
+	
+	private void gotoResultScreen(List<String> userSelection, List<Question> questions, Map<Question, List<Answer>> mapOfQuestionAnswers ) {
+		 this.dispose();
+		 new ResultView (userSelection, questions, mapOfQuestionAnswers);
+	}
 }

@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) {
 		Controller.handler = DatabaseHandler.getInstance();
 		
-		Subject dummySubject = new Subject("Database Systems", 1);
+		Subject dummySubject = new Subject("Database Systems", 2);
 		new QuizView(dummySubject);
 		
 	}
