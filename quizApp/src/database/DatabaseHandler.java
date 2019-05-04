@@ -303,8 +303,9 @@ public class DatabaseHandler {
 	public boolean insertUser(String query, User user){
 		try {
 			statement = connect.prepareStatement(query);
-			statement.setString(1, user.getName());
-			statement.setFloat(2, user.getScore());
+			statement.setInt(1, user.getUserId());
+			statement.setString(2, user.getName());
+			statement.setInt(3, user.getScore());
 			statement.execute();
 			return true;
 		} catch (SQLException e) {
@@ -372,7 +373,7 @@ public class DatabaseHandler {
 	}
 
 
-     private void populateSubject(){
+	private void populateSubject(){
 		ArrayList<Subject> subjects = new ArrayList<Subject>();
 		subjects.add(new Subject("Database Systems",1));
 		subjects.add(new Subject("Networks",2));
@@ -383,6 +384,25 @@ public class DatabaseHandler {
 		}else{
 			System.out.println("failed to insert subjects");
 		}		
+	}
+
+	public boolean updateScore(String query, User user){
+		try {
+			statement = connect.prepareStatement(query);
+			statement.setInt(1, user.getScore());
+			statement.setInt(2, user.getUserId());
+
+
+			if(statement.executeUpdate() > 0){
+				return true;
+			}else {
+				return false;
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Failed to update score");
+			return false;
+		}
 	}
 
 	private void populateQuestion(){
