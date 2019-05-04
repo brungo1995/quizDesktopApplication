@@ -6,9 +6,10 @@ import javax.swing.JFrame;
 
 import quizApp.controller.QuizController;
 import quizApp.model.*;
+import utils.StringUtils;
 import utils.UiUtils;
 
-import javax.swing.JScrollPane;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -30,18 +31,14 @@ public class QuizView extends JFrame {
 	private List<Question> questions; 
 	private List <Answer> answers;
 	private List <String> userSelectedAnswers =  new ArrayList<String>();
-	
-	final private String WELCOME_STRING = "Welcome to the subject: ";
-	final private String HOMEPAGE_STRING = "Home page";
-	final private String NEXT_STRING = "Next";
-	
+
 	private JPanel quiztitlePanel = new JPanel();;
-	private JLabel welcomeLabel = new JLabel(WELCOME_STRING);;
+	private JLabel welcomeLabel = new JLabel(StringUtils.WELCOME_STRING);;
 	private JLabel subjectLabel; 
 	
 	private JPanel quizHomepagePanel = new JPanel();
-	private JButton homepageBtn = new JButton(HOMEPAGE_STRING);
-	private JButton nextBtn = new JButton(NEXT_STRING);
+	private JButton homepageBtn = new JButton(StringUtils.HOMEPAGE_STRING);
+	private JButton nextBtn = new JButton(StringUtils.NEXT_STRING);
 	
 	private JPanel quizQuestionPanel = new JPanel();
 	private JLabel questionNumberLabel = new JLabel();
@@ -62,8 +59,8 @@ public class QuizView extends JFrame {
         setBounds(0, 0, screenSize.width / 2, screenSize.height / 2);
 		
         setQuizTitle(subject.getSubjectName());
-        setHomepageUi();
-        setQuestionUi();
+        configHomepagePanel();
+        configQuestionPanel();
         
 		fetchQuiz(this.subject.getSubjectCode());
 		
@@ -78,7 +75,7 @@ public class QuizView extends JFrame {
 		}
 	}
 	
-	public void setUpQuiz(Quiz quiz) {
+	public void initQuiz(Quiz quiz) {
 		questions = quiz.getQuestions();
 		answers = quiz.getAnswers();
 		Map <Question, List<Answer>> mapOfQuestionAnswers = mapQuestionAndAnswers (questions, answers);
@@ -138,6 +135,14 @@ public class QuizView extends JFrame {
 		}
 	}
 	
+	private void fillUserAnswers(String answerSelected) {
+		 if (answerSelected != null) {
+			  userSelectedAnswers.add(answerSelected);
+		  } else  {
+			  userSelectedAnswers.add("");
+		  }
+	 }
+	
 	public void displayErrorMsg() {
 		System.out.println("Error while fetching data from db");
 	}
@@ -153,25 +158,25 @@ public class QuizView extends JFrame {
 		quiztitlePanel.add(subjectLabel);
 	}
 	
-	private void setHomepageUi() {
+	private void configHomepagePanel() {
 		quizHomepagePanel.setBackground(UIManager.getColor("InternalFrame.borderLight"));
 		getContentPane().add(quizHomepagePanel, BorderLayout.SOUTH);
 		quizHomepagePanel.add(homepageBtn);
 	}
 	
-	private void setQuestionUi() {
+	private void configQuestionPanel() {
 		quizQuestionPanel.setBackground(UIManager.getColor("Button.select"));
 		getContentPane().add(quizQuestionPanel, BorderLayout.CENTER);
 		quizQuestionPanel.setLayout(null);
 		
-		setUpQuestionDescriptUi();
-		setUpRadioBtn();  
+		configQuestionDescriptUi();
+		configRadioBtn();  
 		
 		nextBtn.setBounds(258, 256, 117, 29);
 		quizQuestionPanel.add(nextBtn);
 	}
 	
-	private void setUpQuestionDescriptUi() {
+	private void configQuestionDescriptUi() {
 		questionNumberLabel.setBounds(90, 8, 77, 16);
 		questionNumberLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		questionNumberLabel.setVerticalAlignment(SwingConstants.TOP);
@@ -181,7 +186,7 @@ public class QuizView extends JFrame {
 		quizQuestionPanel.add(questionDescriptionLabel);
 	}
 	
-	private void setUpRadioBtn() {
+	private void configRadioBtn() {
 		answerRadioBtn1.setBounds(90, 50, 500, 23);
 		quizQuestionPanel.add(answerRadioBtn1);
 		
@@ -198,13 +203,5 @@ public class QuizView extends JFrame {
 		radioGroup.add(answerRadioBtn2);
 		radioGroup.add(answerRadioBtn3);
 		radioGroup.add(answerRadioBtn4);
-	 }
-	
-	 private void fillUserAnswers(String answerSelected) {
-		 if (answerSelected != null) {
-			  userSelectedAnswers.add(answerSelected);
-		  } else  {
-			  userSelectedAnswers.add("");
-		  }
 	 }
 }

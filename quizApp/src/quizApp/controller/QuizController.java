@@ -1,6 +1,6 @@
 package quizApp.controller;
 
-import java.util.List;
+
 
 import database.DatabaseHandler;
 import quizApp.model.*;
@@ -17,7 +17,7 @@ public class QuizController {
 		Quiz quiz = DatabaseHandler.getInstance().getQuiz(subjectCode);
 		
 		if (quiz != null) {
-			view.setUpQuiz(quiz);
+			view.initQuiz(quiz);
 		} else {
 			view.displayErrorMsg();
 		}
