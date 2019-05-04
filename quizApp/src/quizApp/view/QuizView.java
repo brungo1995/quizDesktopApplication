@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import quizApp.controller.QuizController;
 import quizApp.model.*;
+import utils.QuizUtils;
 import utils.StringUtils;
 import utils.UiUtils;
 
@@ -19,6 +20,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.JRadioButton;
@@ -78,7 +80,7 @@ public class QuizView extends JFrame {
 	public void initQuiz(Quiz quiz) {
 		questions = quiz.getQuestions();
 		answers = quiz.getAnswers();
-		Map <Question, List<Answer>> mapOfQuestionAnswers = mapQuestionAndAnswers (questions, answers);
+		Map <Question, List<Answer>> mapOfQuestionAnswers = QuizUtils.mapQuestionAndAnswers (questions, answers);
 		
 		if (!questions.isEmpty() && !answers.isEmpty()) {
 			displayQuestion(questions.get(currentQuestion), mapOfQuestionAnswers, currentQuestion);
@@ -144,7 +146,7 @@ public class QuizView extends JFrame {
 	 }
 	
 	public void displayErrorMsg() {
-		System.out.println("Error while fetching data from db");
+		JOptionPane.showMessageDialog(this, StringUtils.ERROR_STRING);
 	}
 	
 	private void setQuizTitle (String subjectName) {
