@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -61,7 +62,7 @@ public class ResultView extends JFrame {
 	private void configScorePanel() {
 		 thankYouText.setBounds(129, 5, 500, 15);
 		 scoreText.setBounds(234, 69, 500, 15);
-		 scorePanel.setBackground(UIManager.getColor("Button.select"));
+		 scorePanel.setBackground(new Color(255, 0, 102));
 		 scorePanel.setLayout(null);
 		 scorePanel.add(thankYouText);
 		 scorePanel.add(scoreText);
@@ -70,7 +71,7 @@ public class ResultView extends JFrame {
 	
 	private void configRestartPanel() {
 		restartBtn.setBounds(225, 280, 117, 29);
-		restartPanel.setBackground(UIManager.getColor("InternalFrame.borderLight"));
+		restartPanel.setBackground(Color.YELLOW);
 		restartPanel.add(restartBtn);
 		restartPanel.add(btnSeeMemo);
 		getContentPane().add(restartPanel, BorderLayout.SOUTH);

@@ -39,12 +39,12 @@ public class UserView extends JFrame{
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.YELLOW);
-		panel.setBounds(0, 0, 687, 41);
+		panel.setBounds(0, 0, 800, 41);
 		getContentPane().add(panel);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.YELLOW);
-		panel_1.setBounds(0, 387, 687, 41);
+		panel_1.setBounds(0, 387, 800, 41);
 		getContentPane().add(panel_1);
 		
 		JPanel panel_2 = new JPanel();

@@ -12,6 +12,7 @@ import utils.UiUtils;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -135,7 +136,7 @@ public class QuizView extends JFrame {
 	}
 	
 	private void setQuizTitle (String subjectName) {
-	    quiztitlePanel.setBackground(UIManager.getColor("InternalFrame.borderLight"));
+	    quiztitlePanel.setBackground(Color.YELLOW);
 	    getContentPane().add(quiztitlePanel, BorderLayout.NORTH);
 		
 		welcomeLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -146,14 +147,14 @@ public class QuizView extends JFrame {
 	}
 	
 	private void configHomepagePanel() {
-		quizHomepagePanel.setBackground(UIManager.getColor("InternalFrame.borderLight"));
+		quizHomepagePanel.setBackground(Color.YELLOW);
 		getContentPane().add(quizHomepagePanel, BorderLayout.SOUTH);
 		quizHomepagePanel.add(homepageBtn);
 		onHomeBtnClick();
 	}
 	
 	private void configQuestionPanel() {
-		quizQuestionPanel.setBackground(UIManager.getColor("Button.select"));
+		quizQuestionPanel.setBackground(new Color(255, 0, 102));
 		getContentPane().add(quizQuestionPanel, BorderLayout.CENTER);
 		quizQuestionPanel.setLayout(null);
 		

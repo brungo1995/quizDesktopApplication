@@ -32,12 +32,12 @@ public class WelcomeView extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.YELLOW);
-		panel.setBounds(0, 0, 687, 40);
+		panel.setBounds(0, 0, 800, 40);
 		getContentPane().add(panel);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.YELLOW);
-		panel_1.setBounds(0, 388, 687, 40);
+		panel_1.setBounds(0, 388, 800, 40);
 		getContentPane().add(panel_1);
 		
 		JLabel label = new JLabel("Welcome to the BTech Quiz Game");
