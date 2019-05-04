@@ -102,22 +102,7 @@ public class QuizView extends JFrame {
 		});
 	}
 	
-	private Map<Question, List<Answer>> mapQuestionAndAnswers(List<Question> questions, List<Answer> answers) {
-		Map <Question, List<Answer>> map = new HashMap<Question, List<Answer>>();
-		
-		for (Question question : questions) {
-			List<Answer> questionAnswers =  new ArrayList<>();
-			for (Answer answer : answers) {
-				if (answer.getQuestionCode() == question.getQuestionCode()) {
-					questionAnswers.add(answer);
-				}
-				map.put(question, questionAnswers);
-			}
-		 }
-		
-		return map;
-	}
-	
+
 	private void displayQuestion(Question question, Map <Question, List<Answer>> mapOfQuestionAnswers, int position ) {
 		if (question != null) {
 			int questionNumber = currentQuestion + 1;
