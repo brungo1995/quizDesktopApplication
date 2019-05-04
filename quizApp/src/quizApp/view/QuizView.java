@@ -175,16 +175,16 @@ public class QuizView extends JFrame {
 	}
 	
 	private void configRadioBtn() {
-		answerRadioBtn1.setBounds(90, 50, 500, 23);
+		answerRadioBtn1.setBounds(20, 50, 600, 23);
 		quizQuestionPanel.add(answerRadioBtn1);
 		
-		answerRadioBtn2.setBounds(90, 100, 500, 23);
+		answerRadioBtn2.setBounds(20, 100, 600, 23);
 		quizQuestionPanel.add(answerRadioBtn2);
 		
-	    answerRadioBtn3.setBounds(90, 150, 500, 23);
+	    answerRadioBtn3.setBounds(20, 150, 600, 23);
 		quizQuestionPanel.add(answerRadioBtn3);
 		
-		answerRadioBtn4.setBounds(90, 200, 500, 23);
+		answerRadioBtn4.setBounds(20, 200, 600, 23);
 		quizQuestionPanel.add(answerRadioBtn4);
 		
 		radioGroup.add(answerRadioBtn1);
