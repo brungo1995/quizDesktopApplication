@@ -61,7 +61,7 @@ public class QuizView extends JFrame {
 		
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(0, 0, screenSize.width / 2, screenSize.height / 2);
-		
+        
         setQuizTitle(subject.getSubjectName());
         configHomepagePanel();
         configQuestionPanel();

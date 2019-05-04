@@ -12,8 +12,9 @@ public class Controller {
 	
 //	User(int userId, String name, int score)
 	public User addUser(User user){
-		String query = "insert into users(userId, name, score) values(?,?)";
-		if(handler.insertUser(query, user)){			
+		String query = "insert into users(userId, name, score) values(?,?,?)";
+		if(handler.insertUser(query, user)){
+			System.out.println("ïnserted new user");
 			return getUser(user.getUserId());
 		}else{
 			return null;
